@@ -1,0 +1,107 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "A comprehensive expense tracking web application built with HTML, CSS, and JavaScript. Features include transaction management, data visualization, responsive design, and secure local storage.",
+  "main": "index.html",
+  "homepage": "https://YOUR_USERNAME.github.io/expense-tracker/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/expense-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/expense-tracker/issues"
+  },
+  "scripts": {
+    "start": "serve . -p 3000 -s",
+    "dev": "serve . -p 3000 -s --live-reload",
+    "serve": "serve . -p 8080 -s",
+    "test": "jest --no-babel",
+    "test:watch": "jest --watch --no-babel",
+    "test:coverage": "jest --coverage --no-babel",
+    "lint": "echo 'Linting skipped'",
+    "format": "echo 'Formatting skipped'",
+    "deploy": "echo 'Deploying to GitHub Pages...' && git add . && git commit -m 'Deploy updates' && git push origin main",
+    "clean": "rm -rf coverage/ dist/ node_modules/.cache/",
+    "reinstall": "rm -rf node_modules package-lock.json && npm install"
+  },
+  "keywords": [
+    "expense-tracker",
+    "finance",
+    "budget",
+    "money-management",
+    "javascript",
+    "web-app",
+    "responsive-design",
+    "chart-js",
+    "tailwind-css",
+    "local-storage",
+    "financial-app",
+    "transaction-tracker",
+    "personal-finance",
+    "web-development",
+    "frontend",
+    "vanilla-js",
+    "html5",
+    "css3",
+    "dark-theme",
+    "mobile-first",
+    "accessibility",
+    "praful-singh"
+  ],
+  "author": {
+    "name": "Praful Singh",
+    "email": "prafuls0105@gmail.com",
+    "url": "https://github.com/Xander0105"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "serve": "^14.2.1"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "testTimeout": 10000,
+    "transform": {},
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverage": false,
+    "clearMocks": true,
+    "restoreMocks": true,
+    "resetMocks": true
+  },
+  "files": [
+    "index.html",
+    "css/",
+    "js/",
+    "assets/",
+    "README.md",
+    "LICENSE"
+  ],
+  "directories": {
+    "test": "tests",
+    "doc": "docs"
+  },
+  "config": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/Xander0105"
+  }
+}

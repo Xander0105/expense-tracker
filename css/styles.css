@@ -1,0 +1,517 @@
+/**
+ * Custom styles for Expense Tracker
+ * Enhances Tailwind CSS with additional styling
+ * @author Praful Singh
+ */
+
+/* Custom CSS Variables */
+:root {
+    --gold: #FFD700;
+    --dark-gold: #B8860B;
+    --dark-bg: #0a0a0a;
+    --card-bg: #1a1a1a;
+    --border-color: #374151;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-gold);
+}
+
+/* Loading Animation */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Custom Button Styles */
+.btn-primary {
+    @apply bg-gold text-black px-6 py-2 rounded-lg font-medium hover:bg-darkGold transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+.btn-secondary {
+    @apply bg-gray-700 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+.btn-danger {
+    @apply bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+.btn-success {
+    @apply bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+/* Form Styles */
+.form-input {
+    @apply w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors;
+}
+
+.form-select {
+    @apply w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors;
+}
+
+/* Card Styles */
+.card {
+    @apply bg-cardBg border border-gray-700 rounded-lg shadow-lg;
+}
+
+.card-header {
+    @apply border-b border-gray-700 px-6 py-4;
+}
+
+.card-body {
+    @apply px-6 py-4;
+}
+
+.card-footer {
+    @apply border-t border-gray-700 px-6 py-4;
+}
+
+/* Transaction Item Styles */
+.transaction-item {
+    @apply bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-colors;
+}
+
+.transaction-item.income {
+    @apply border-l-4 border-green-500;
+}
+
+.transaction-item.expense {
+    @apply border-l-4 border-red-500;
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 320px;
+    width: 100%;
+}
+
+.chart-empty-state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+/* Focus Styles */
+.focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+/* Utility Classes */
+.text-gold {
+    color: var(--gold);
+}
+
+.text-dark-gold {
+    color: var(--dark-gold);
+}
+
+.bg-dark-bg {
+    background-color: var(--dark-bg);
+}
+
+.bg-card-bg {
+    background-color: var(--card-bg);
+}
+
+.border-gold {
+    border-color: var(--gold);
+}
+
+/* Status Indicators */
+.status-success {
+    @apply bg-green-100 text-green-800 border border-green-200;
+}
+
+.status-error {
+    @apply bg-red-100 text-red-800 border border-red-200;
+}
+
+.status-warning {
+    @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
+}
+
+.status-info {
+    @apply bg-blue-100 text-blue-800 border border-blue-200;
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, transparent 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mobile-stack {
+        @apply flex-col space-y-4 space-x-0;
+    }
+    
+    .mobile-full {
+        @apply w-full;
+    }
+    
+    .mobile-text-center {
+        @apply text-center;
+    }
+    
+    .mobile-hidden {
+        @apply hidden;
+    }
+    
+    /* Mobile form adjustments */
+    .form-grid-mobile {
+        @apply grid-cols-1 gap-4;
+    }
+    
+    /* Mobile summary cards */
+    .summary-card-mobile {
+        @apply text-center;
+    }
+}
+
+@media (max-width: 640px) {
+    .sm-text-sm {
+        @apply text-sm;
+    }
+    
+    .sm-px-2 {
+        @apply px-2;
+    }
+    
+    .sm-py-1 {
+        @apply py-1;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .tablet-grid-2 {
+        @apply grid-cols-2;
+    }
+    
+    .tablet-text-base {
+        @apply text-base;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+    .desktop-grid-3 {
+        @apply grid-cols-3;
+    }
+    
+    .desktop-grid-5 {
+        @apply grid-cols-5;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .high-dpi-border {
+        border-width: 0.5px;
+    }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .auto-dark {
+        @apply bg-gray-900 text-white;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-break {
+        page-break-after: always;
+    }
+    
+    .print-avoid-break {
+        page-break-inside: avoid;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        background: white !important;
+    }
+    
+    .transaction-item {
+        border: 1px solid #ccc !important;
+        background: white !important;
+        margin-bottom: 10px;
+    }
+}
+
+/* Accessibility Improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.focus-visible {
+    @apply focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2;
+}
+
+/* Custom Checkbox and Radio Styles */
+.custom-checkbox {
+    @apply appearance-none w-4 h-4 border border-gray-600 rounded bg-gray-800 checked:bg-gold checked:border-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+.custom-radio {
+    @apply appearance-none w-4 h-4 border border-gray-600 rounded-full bg-gray-800 checked:bg-gold checked:border-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+/* Toast Notifications */
+.toast {
+    @apply fixed top-4 right-4 max-w-sm bg-gray-800 border border-gray-600 rounded-lg shadow-lg p-4 z-50;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast.success {
+    @apply border-green-500;
+}
+
+.toast.error {
+    @apply border-red-500;
+}
+
+.toast.warning {
+    @apply border-yellow-500;
+}
+
+.toast.info {
+    @apply border-blue-500;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Dropdown Styles */
+.dropdown {
+    @apply relative inline-block;
+}
+
+.dropdown-content {
+    @apply absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-10 hidden;
+}
+
+.dropdown:hover .dropdown-content {
+    @apply block;
+}
+
+.dropdown-item {
+    @apply block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white;
+}
+
+/* Progress Bar */
+.progress-bar {
+    @apply w-full bg-gray-700 rounded-full h-2;
+}
+
+.progress-fill {
+    @apply bg-gold h-2 rounded-full transition-all duration-300 ease-out;
+}
+
+/* Badge Styles */
+.badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+    @apply bg-gold text-black;
+}
+
+.badge-secondary {
+    @apply bg-gray-700 text-gray-300;
+}
+
+.badge-success {
+    @apply bg-green-600 text-white;
+}
+
+.badge-danger {
+    @apply bg-red-600 text-white;
+}
+
+.badge-warning {
+    @apply bg-yellow-600 text-white;
+}
+
+.badge-info {
+    @apply bg-blue-600 text-white;
+}
+
+/* Tooltip */
+.tooltip {
+    @apply relative;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs text-white bg-gray-900 rounded opacity-0 pointer-events-none transition-opacity duration-200;
+}
+
+.tooltip:hover::before {
+    @apply opacity-100;
+}
+
+/* Custom Scrollbar for specific elements */
+.custom-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--dark-bg);
+}
+
+.custom-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+    border-radius: 3px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 3px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-gold);
+}

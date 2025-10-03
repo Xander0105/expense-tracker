@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional expense tracking application built by Praful Singh">
+    <meta name="keywords" content="expense tracker, finance, budget, money management">
+    <meta name="author" content="Praful Singh">
+    
+    <title id="app-title">Expense Tracker | Praful Singh</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    
+    <!-- External CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#FFD700',
+                        darkGold: '#B8860B',
+                        darkBg: '#0a0a0a',
+                        cardBg: '#1a1a1a'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-white min-h-screen">
+    <!-- Loading Spinner -->
+    <div id="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gold"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-cardBg border-b border-gold shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/images/logo.png" alt="Logo" class="w-8 h-8 mr-3" onerror="this.style.display='none'">
+                    <h1 class="text-2xl font-bold text-gold">
+                        <i class="fas fa-wallet mr-2"></i><span id="app-name">Expense Tracker</span>
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-300">
+                        Built by <span class="text-gold">Praful Singh</span>
+                    </span>
+                    <div class="text-xs text-gray-400" id="app-version">v1.0.0</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Summary Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" aria-label="Financial Summary">
+            <div class="bg-cardBg border border-green-500 rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-green-400 text-sm font-medium">Total Income</p>
+                        <p class="text-2xl font-bold text-green-400" id="totalIncome" aria-label="Total Income Amount">USD 0.00</p>
+                    </div>
+                    <i class="fas fa-arrow-up text-green-400 text-2xl" aria-hidden="true"></i>
+                </div>
+            </div>
+            
+            <div class="bg-cardBg border border-red-500 rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-red-400 text-sm font-medium">Total Expenses</p>
+                        <p class="text-2xl font-bold text-red-400" id="totalExpenses" aria-label="Total Expenses Amount">USD 0.00</p>
+                    </div>
+                    <i class="fas fa-arrow-down text-red-400 text-2xl" aria-hidden="true"></i>
+                </div>
+            </div>
+            
+            <div class="bg-cardBg border border-gold rounded-lg p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gold text-sm font-medium">Net Balance</p>
+                        <p class="text-2xl font-bold text-gold" id="netBalance" aria-label="Net Balance Amount">USD 0.00</p>
+                    </div>
+                    <i class="fas fa-balance-scale text-gold text-2xl" aria-hidden="true"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Transaction Form -->
+        <section class="bg-cardBg rounded-lg p-6 mb-8 border border-gray-700 shadow-lg">
+            <h2 class="text-xl font-bold text-gold mb-6">
+                <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Transaction
+            </h2>
+            
+            <form id="transactionForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" novalidate>
+                <div>
+                    <label for="transactionType" class="block text-sm font-medium text-gray-300 mb-2">Type *</label>
+                    <select id="transactionType" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required aria-required="true">
+                        <option value="">Select Type</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                    <div class="text-red-400 text-xs mt-1 hidden" id="typeError"></div>
+                </div>
+                
+                <div>
+                    <label for="transactionDate" class="block text-sm font-medium text-gray-300 mb-2">Date *</label>
+                    <input type="date" id="transactionDate" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required aria-required="true">
+                    <div class="text-red-400 text-xs mt-1 hidden" id="dateError"></div>
+                </div>
+                
+                <div>
+                    <label for="transactionDescription" class="block text-sm font-medium text-gray-300 mb-2">Description *</label>
+                    <input type="text" id="transactionDescription" placeholder="Enter description" maxlength="100" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required aria-required="true">
+                    <div class="text-red-400 text-xs mt-1 hidden" id="descriptionError"></div>
+                </div>
+                
+                <div>
+                    <label for="transactionCategory" class="block text-sm font-medium text-gray-300 mb-2">Category *</label>
+                    <select id="transactionCategory" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required aria-required="true">
+                        <option value="">Select Category</option>
+                    </select>
+                    <div class="text-red-400 text-xs mt-1 hidden" id="categoryError"></div>
+                </div>
+                
+                <div>
+                    <label for="transactionAmount" class="block text-sm font-medium text-gray-300 mb-2">Amount (USD) *</label>
+                    <input type="number" id="transactionAmount" placeholder="0.00" step="0.01" min="0" max="999999.99" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required aria-required="true">
+                    <div class="text-red-400 text-xs mt-1 hidden" id="amountError"></div>
+                </div>
+            </form>
+            
+            <div class="flex flex-wrap gap-4 mt-6">
+                <button type="submit" form="transactionForm" class="bg-gold text-black px-6 py-2 rounded-lg font-medium hover:bg-darkGold transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900">
+                    <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Transaction
+                </button>
+                <button type="button" id="clearForm" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                    <i class="fas fa-eraser mr-2" aria-hidden="true"></i>Clear Form
+                </button>
+            </div>
+            
+            <div id="errorMessage" class="mt-4 p-3 bg-red-900 border border-red-500 rounded-lg text-red-200 hidden" role="alert"></div>
+            <div id="successMessage" class="mt-4 p-3 bg-green-900 border border-green-500 rounded-lg text-green-200 hidden" role="alert"></div>
+        </section>
+
+        <!-- Filters and Controls -->
+        <section class="bg-cardBg rounded-lg p-6 mb-8 border border-gray-700 shadow-lg">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-4">
+                    <div>
+                        <label for="categoryFilter" class="block text-sm font-medium text-gray-300 mb-2">Filter by Category</label>
+                        <select id="categoryFilter" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold transition-colors">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="typeFilter" class="block text-sm font-medium text-gray-300 mb-2">Filter by Type</label>
+                        <select id="typeFilter" class="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold transition-colors">
+                            <option value="">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button id="exportData" class="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        <i class="fas fa-download mr-2" aria-hidden="true"></i>Export
+                    </button>
+                    <input type="file" id="importData" accept=".json" class="hidden" aria-label="Import data file">
+                    <button id="importButton" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                        <i class="fas fa-upload mr-2" aria-hidden="true"></i>Import
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transactions and Chart -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Transactions List -->
+            <section class="bg-cardBg rounded-lg p-6 border border-gray-700 shadow-lg">
+                <h2 class="text-xl font-bold text-gold mb-6">
+                    <i class="fas fa-list mr-2" aria-hidden="true"></i>Recent Transactions
+                </h2>
+                
+                <div id="transactionsList" class="space-y-3 max-h-96 overflow-y-auto" role="list">
+                    <div class="text-center text-gray-400 py-8">
+                        <i class="fas fa-inbox text-4xl mb-4" aria-hidden="true"></i>
+                        <p>No transactions yet. Add your first transaction above!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart -->
+            <section class="bg-cardBg rounded-lg p-6 border border-gray-700 shadow-lg">
+                <h2 class="text-xl font-bold text-gold mb-6">
+                    <i class="fas fa-chart-pie mr-2" aria-hidden="true"></i>Expense Distribution
+                </h2>
+                
+                <div class="relative h-80">
+                    <canvas id="expenseChart" aria-label="Expense distribution chart"></canvas>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+        <div class="bg-cardBg rounded-lg p-6 w-full max-w-md mx-4 border border-gray-700 shadow-xl">
+            <h3 id="editModalTitle" class="text-xl font-bold text-gold mb-4">Edit Transaction</h3>
+            
+            <form id="editForm" class="space-y-4" novalidate>
+                <input type="hidden" id="editId">
+                
+                <div>
+                    <label for="editType" class="block text-sm font-medium text-gray-300 mb-2">Type *</label>
+                    <select id="editType" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="editDate" class="block text-sm font-medium text-gray-300 mb-2">Date *</label>
+                    <input type="date" id="editDate" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required>
+                </div>
+                
+                <div>
+                    <label for="editDescription" class="block text-sm font-medium text-gray-300 mb-2">Description *</label>
+                    <input type="text" id="editDescription" maxlength="100" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required>
+                </div>
+                
+                <div>
+                    <label for="editCategory" class="block text-sm font-medium text-gray-300 mb-2">Category *</label>
+                    <select id="editCategory" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="editAmount" class="block text-sm font-medium text-gray-300 mb-2">Amount (USD) *</label>
+                    <input type="number" id="editAmount" step="0.01" min="0" max="999999.99" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors" required>
+                </div>
+            </form>
+            
+            <div class="flex gap-4 mt-6">
+                <button type="submit" form="editForm" class="bg-gold text-black px-4 py-2 rounded-lg font-medium hover:bg-darkGold transition-colors focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900">
+                    <i class="fas fa-save mr-2" aria-hidden="true"></i>Update
+                </button>
+                <button id="cancelEdit" class="bg-gray-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-900">
+                    <i class="fas fa-times mr-2" aria-hidden="true"></i>Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-cardBg border-t border-gray-700 mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-sm text-gray-400">
+                    © 2024 Expense Tracker. Built with ❤️ by <span class="text-gold">Praful Singh</span>
+                </div>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <a href="https://github.com/Xander0105" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/praful-singh-2335781bb" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
